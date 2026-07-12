@@ -13,11 +13,21 @@ const urlInputEl = requireEl<HTMLInputElement>("#url-input");
 const statusEl = requireEl<HTMLElement>("#status");
 let url: UrlFormat;
 let urlFeedback : UrlFeedBackStatus = {status : "idle"};
+let currentRequestId = 0;
 
 const apiRequestDebouncer = new Debouncer(async () => {
     if (!url.ok) return;
+
+    const myRequestId = ++currentRequestId;
+
     updateFeedbackStatus({status: "checking", url : url});
     const result = await checkUrlExistence(url.url.href);
+
+    if (myRequestId !== currentRequestId) {
+        console.log(`Request #${myRequestId} ignored`);
+        return;
+    }
+
     updateFeedbackStatus(result.isLive 
         ? {status: "success", url: url, typ: result.typ}
         : {status: "notLive", url: url}

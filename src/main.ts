@@ -28,6 +28,31 @@ const apiRequestDebouncer = new Debouncer(async () => {
 // TODO implement logic
 function renderFeedbackStatus() {
     console.log(urlFeedback);
+    switch (urlFeedback.status) {
+        case "idle":
+            statusEl.textContent = "Enter a URL to start...";
+            break;
+        case "invalidFormat":
+            statusEl.textContent = "URL format invalid, enter a valid URL (e.g., https://example.com).";
+            break;
+        case "validFormat":
+            statusEl.textContent = "Url Format valid.";
+            break;
+        case "checking":
+            statusEl.textContent = "Checking URL existence...";
+            break;
+        case "notLive":
+            statusEl.textContent = "URL doesnt exist.";
+            break;
+        case "success":
+            statusEl.textContent = `URL does exist and its type: [${urlFeedback.typ.toUpperCase()}]`;
+            break;
+
+        default:
+            // exhaustiveness check
+            const _exhaustiveCheck: never = urlFeedback;
+            return _exhaustiveCheck;
+    }
 }
 
 // TODO implement logic

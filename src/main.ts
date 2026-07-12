@@ -1,0 +1,1 @@
+console.log("App successfully initialized!");

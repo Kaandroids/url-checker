@@ -70,6 +70,7 @@ function updateFeedbackStatus(status: UrlFeedBackStatus) {
 
 urlInputEl.addEventListener("input", () => {
     url = isValidUrl(urlInputEl.value);
+    currentRequestId++;
     // cancel old timer if it exist: if a part of the end url is valid, we will check that part unnecessarily
     // example: https://google.com  -> we check it unnecessarily because its a part of end url: https://google.com/index.html
     apiRequestDebouncer.cancelTimer();

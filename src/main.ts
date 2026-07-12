@@ -1,4 +1,5 @@
 import { Debouncer } from "./utils/debouncer.js";
+import { checkUrlExistence } from "./utils/mockAPI.js";
 import { isValidUrl, UrlFormat } from "./utils/urlValidator.js";
 
 function requireEl<T extends HTMLElement>(selector: string): T{
@@ -12,8 +13,10 @@ const statusEl = requireEl<HTMLElement>("#status");
 let url: UrlFormat;
 
 // TODO implement logic 
-const apiRequestDebouncer = new Debouncer(() => {
-    console.log("test debouncer.ts");
+const apiRequestDebouncer = new Debouncer(async () => {
+    if (!url.ok) return;
+    const result = await checkUrlExistence(url.url.href);
+    console.log(result);
 }, 500);
 
 // TODO implement logic
@@ -21,6 +24,7 @@ function renderFeedbackStatus() {
     console.log("renderFeedbackStatus called....");
 }
 
+// TODO implement logic
 function updateFeedbackStatus(status: string) {
     console.log(`feedback status updated with ${status}`);
     renderFeedbackStatus();

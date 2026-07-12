@@ -14,7 +14,6 @@ const statusEl = requireEl<HTMLElement>("#status");
 let url: UrlFormat;
 let urlFeedback : UrlFeedBackStatus = {status : "idle"};
 
-// TODO implement logic 
 const apiRequestDebouncer = new Debouncer(async () => {
     if (!url.ok) return;
     updateFeedbackStatus({status: "checking", url : url});
@@ -25,7 +24,6 @@ const apiRequestDebouncer = new Debouncer(async () => {
     );
 }, 500);
 
-// TODO implement logic
 function renderFeedbackStatus() {
     console.log(urlFeedback);
     switch (urlFeedback.status) {
@@ -55,7 +53,6 @@ function renderFeedbackStatus() {
     }
 }
 
-// TODO implement logic
 function updateFeedbackStatus(status: UrlFeedBackStatus) {
     urlFeedback = status;
     renderFeedbackStatus();

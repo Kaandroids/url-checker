@@ -42,6 +42,7 @@ urlInputEl.addEventListener("input", () => {
     // example: https://google.com  -> we check it unnecessarily because its a part of end url: https://google.com/index.html
     apiRequestDebouncer.cancelTimer();
     if(url.ok) {
+        updateFeedbackStatus({status: "validFormat", url : url});
         // active debouncer only if the given url format is valid, to avoid unnecessary requests
         apiRequestDebouncer.runTimer();
     } else {

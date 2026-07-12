@@ -29,5 +29,13 @@ To run this project locally, ensure you have [Node.js](https://nodejs.org/) inst
    npx serve .
    ```
 
+## Testing
+
+**To run tests, execute:**
+   ```bash
+   npm run test
+   ```
+
+
 **Author:** Kaan Kara
 

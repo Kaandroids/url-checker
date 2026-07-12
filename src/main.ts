@@ -1,5 +1,6 @@
 import { Debouncer } from "./utils/debouncer.js";
 import { checkUrlExistence } from "./utils/mockAPI.js";
+import { UrlFeedBackStatus } from "./utils/urlFeedbackStatus.js";
 import { isValidUrl, UrlFormat } from "./utils/urlValidator.js";
 
 function requireEl<T extends HTMLElement>(selector: string): T{
@@ -11,22 +12,27 @@ function requireEl<T extends HTMLElement>(selector: string): T{
 const urlInputEl = requireEl<HTMLInputElement>("#url-input");
 const statusEl = requireEl<HTMLElement>("#status");
 let url: UrlFormat;
+let urlFeedback : UrlFeedBackStatus = {status : "idle"};
 
 // TODO implement logic 
 const apiRequestDebouncer = new Debouncer(async () => {
     if (!url.ok) return;
+    updateFeedbackStatus({status: "checking", url : url});
     const result = await checkUrlExistence(url.url.href);
-    console.log(result);
+    updateFeedbackStatus(result.isLive 
+        ? {status: "success", url: url, typ: result.typ}
+        : {status: "notLive", url: url}
+    );
 }, 500);
 
 // TODO implement logic
 function renderFeedbackStatus() {
-    console.log("renderFeedbackStatus called....");
+    console.log(urlFeedback);
 }
 
 // TODO implement logic
-function updateFeedbackStatus(status: string) {
-    console.log(`feedback status updated with ${status}`);
+function updateFeedbackStatus(status: UrlFeedBackStatus) {
+    urlFeedback = status;
     renderFeedbackStatus();
 }
 
@@ -36,10 +42,9 @@ urlInputEl.addEventListener("input", () => {
     // example: https://google.com  -> we check it unnecessarily because its a part of end url: https://google.com/index.html
     apiRequestDebouncer.cancelTimer();
     if(url.ok) {
-        updateFeedbackStatus("url valid");
         // active debouncer only if the given url format is valid, to avoid unnecessary requests
         apiRequestDebouncer.runTimer();
     } else {
-        updateFeedbackStatus("url invalid");
+        updateFeedbackStatus({status: "invalidFormat", url: url});
     }
 });
